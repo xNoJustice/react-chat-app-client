@@ -25,6 +25,16 @@ const Chat = () => {
     });
   }, [socket]);
 
+  useEffect(() => {
+    return () => {
+      setName("");
+      setRoom("");
+      socket.emit("disconnet", name);
+      history.push("/");
+      history.go(0);
+    };
+  }, [history, name, setName, setRoom, socket]);
+
   const handleSendMessage = () => {
     socket.emit("sendMessage", message, () => setMessage(""));
     setMessage("");
@@ -33,6 +43,7 @@ const Chat = () => {
   const logout = () => {
     setName("");
     setRoom("");
+    socket.emit("disconnet", name);
     history.push("/");
     history.go(0);
   };
